@@ -5,7 +5,6 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import PieChart from 'highcharts-react-official';
 import { createTheme } from "@mui/material";
-import { red } from "@mui/material/colors";
 import { ThemeProvider } from "@mui/material/styles";
 
 const Home = () => {
