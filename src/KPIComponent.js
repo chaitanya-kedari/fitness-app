@@ -1,7 +1,7 @@
 
-const weeklyAvg = (kpi) => {
+// const weeklyAvg = (kpi) => {
 
-}
+// }
 
 const KPIComponent = (props) => {
     //const {tabledata} = props;
