@@ -10,6 +10,7 @@ import TableComponent from "./TableComponent";
 import moment from "moment";
 import ChartComponent from "./ChartComponent";
 import KPIComponent from "./KPIComponent";
+import { config } from "./config";
 
 const Home = () => {
     const [tabledata, setTabledata] = useState(
@@ -27,7 +28,7 @@ const Home = () => {
     const [sortedData, setsortedData] = useState(tabledata);
 
     useEffect(() => {
-        fetch('http://localhost:8000/tabledata')
+        fetch(config.json_server)
         .then(res => {
             return res.json();
         })
