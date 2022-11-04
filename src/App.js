@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import Home from "./Home";
-import image from "./img/fitness2.png";
+import image from "./img/fitness3.png";
 
 function App() {
   return (

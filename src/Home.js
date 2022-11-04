@@ -1,23 +1,30 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, TableSortLabel } from "@mui/material";
+//import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, TableSortLabel } from "@mui/material";
 import { useState, useEffect } from "react"; 
 import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
+//import HighchartsReact from 'highcharts-react-official';
 import PieChart from 'highcharts-react-official';
-import { createTheme } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
+import TableComponent from "./TableComponent";
+//import { createTheme } from "@mui/material";
+//import { ThemeProvider } from "@mui/material/styles";
+import moment from "moment";
+import ChartComponent from "./ChartComponent";
+import KPIComponent from "./KPIComponent";
 
 const Home = () => {
-    const [tabledata, setTabledata] = useState([
-        {
+    const [tabledata, setTabledata] = useState(
+        [{
             "Date": "1-Sep-2022",
             "Weight": 60,
             "BMI": 21,
             "BodyFat": 19,
             "MuscleMass": 46.0,
             "BodyWater": 57.5
-        }]);
+        }]
+    // null 
+        );
     const [order, setorder] = useState('asc');
+    const [sortedData, setsortedData] = useState(tabledata);
 
     useEffect(() => {
         fetch('http://localhost:8000/tabledata')
@@ -25,17 +32,28 @@ const Home = () => {
             return res.json();
         })
         .then(data => {
-            setTabledata(data);
+            let sorted = data.sort((a, b) => moment(a.Date).format("YYYYMMDD") - moment(b.Date).format("YYYYMMDD"))
+            setTabledata(sorted);
+            setsortedData(sorted);
         });
     }, []);
 
-    const options = {
-        title: {text: 'Weight'},
-        series: [{ 
-            name: 'Last month',
-            data: tabledata.map((row) => row.Weight)
-        }]
-    };
+    // const options = {
+    //     title: {text: 'Weekly trend'},
+    //     xAxis: {
+    //         categories: tabledata.map((row) => moment(row.Date).format("D-MMM"))
+    //     },
+    //     yAxis: {
+    //         title: { text: 'lbs' }
+    //     },
+    //     series: [{ 
+    //         name: 'Weight',
+    //         data: tabledata.map((row) => row.Weight)
+    //     }, {
+    //         name: 'Muscle mass',
+    //         data: tabledata.map((row) => row.MuscleMass)
+    //     }]
+    // };
 
     const options2 = {
         chart: {type: "pie"},
@@ -47,41 +65,41 @@ const Home = () => {
 
     const sorting = (col) => {
         if (order === 'asc') {
-            const sorted = [...tabledata].sort((a,b) => 
+            const sorted = [...sortedData].sort((a,b) => 
             a[col] > b[col] ? 1 : -1
             );
-        setTabledata(sorted); 
+        setsortedData(sorted);  
         setorder('desc');
         }
         if (order === 'desc') {
-            const sorted = [...tabledata].sort((a,b) => 
+            const sorted = [...sortedData].sort((a,b) => 
             a[col] < b[col] ? 1 : -1
             );
-        setTabledata(sorted); 
+        setsortedData(sorted); 
         setorder('asc');
         }
     } 
 
-    // const createTheme = () => {
-    //     return createTheme({
-    //         MUIDataTableHeadCell:{ root:{ “& .MUITableSortLabel-icon”: { color: “black” }    
-    //     )}
-    // } 
+    // // const createTheme = () => {
+    // //     return createTheme({
+    // //         MUIDataTableHeadCell:{ root:{ “& .MUITableSortLabel-icon”: { color: “black” }    
+    // //     )}
+    // // } 
 
-    const theme = createTheme({
-        components: {
-          // Name of the component
-          MUIDataTableHeadCell: {
-            styleOverrides: {
-              // Name of the slot
-              root: {
-                // Some CSS
-                color: "red"
-              },
-            },
-          },
-        },
-      });
+    // const theme = createTheme({
+    //     components: {
+    //       // Name of the component
+    //       MUIDataTableHeadCell: {
+    //         styleOverrides: {
+    //           // Name of the slot
+    //           root: {
+    //             // Some CSS
+    //             color: "red"
+    //           },
+    //         },
+    //       },
+    //     },
+    //   });
       
       
 
@@ -93,34 +111,7 @@ const Home = () => {
                         <Typography variant="h5" gutterBottom>
                             WEEKLY DATA
                         </Typography>
-                        <TableContainer component={Paper}>
-                            <Table aria-label='simple table'>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>
-                                        <ThemeProvider theme={theme}>
-                                        <TableSortLabel active='true'  direction={order} onClick={()=>sorting("Date")}> 
-
-                                           Date </TableSortLabel>
-                                           </ThemeProvider>
-                                        </TableCell>
-                                        <TableCell onClick={() => sorting("Weight")}>Weight</TableCell>
-                                        <TableCell onClick={() => sorting("BMI")}>BMI</TableCell>
-                                        <TableCell onClick={() => sorting("BodyFat")}>BodyFat</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {tabledata.map((row) => (
-                                        <TableRow key={row.Date}>
-                                            <TableCell>{row.Date}</TableCell>
-                                            <TableCell>{row.Weight}</TableCell>
-                                            <TableCell>{row.BMI}</TableCell>
-                                            <TableCell>{row.BodyFat}</TableCell>
-                                        </TableRow>        
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <TableComponent tabledata = {sortedData} order = {order} sorting = {sorting}></TableComponent>
                     </Box>
                 </Grid>
                 <Grid item xs={4}>
@@ -128,13 +119,13 @@ const Home = () => {
                         <Typography variant="h5" gutterBottom>
                             WEIGHT TREND
                         </Typography>
-                        <HighchartsReact highcharts={Highcharts} options={options} />
+                        <ChartComponent tabledata={tabledata}></ChartComponent>
                     </Box>
                 </Grid>
                 <Grid item xs={4}>
                     <Box p={2} border='1px dashed grey'>
                         <Typography variant="h1" gutterBottom align="center">
-                            250
+                            <KPIComponent tabledata={tabledata}></KPIComponent>
                         </Typography>
                         <Typography variant="button" display="block" gutterBottom align="center">
                             average calories burned
