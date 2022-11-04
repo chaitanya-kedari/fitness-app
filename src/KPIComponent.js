@@ -4,8 +4,8 @@ const weeklyAvg = (kpi) => {
 }
 
 const KPIComponent = (props) => {
-    const {tabledata} = props;
-    const avg = weeklyAvg("BodyWater");
+    //const {tabledata} = props;
+    //const avg = weeklyAvg("BodyWater");
 
     return (
         <div>
