@@ -1,9 +1,9 @@
 import { Box, Grid, Typography } from "@mui/material";
 //import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, TableSortLabel } from "@mui/material";
 import { useState, useEffect } from "react"; 
-import Highcharts from 'highcharts';
+// import Highcharts from 'highcharts';
 //import HighchartsReact from 'highcharts-react-official';
-import PieChart from 'highcharts-react-official';
+// import PieChart from 'highcharts-react-official';
 import TableComponent from "./TableComponent";
 //import { createTheme } from "@mui/material";
 //import { ThemeProvider } from "@mui/material/styles";
@@ -56,13 +56,13 @@ const Home = () => {
     //     }]
     // };
 
-    const options2 = {
-        chart: {type: "pie"},
-        series: [{ 
-            name: 'Sept 2022',
-            data: tabledata.map((row) => row.BMI)
-        }]
-    };
+    // const options2 = {
+    //     chart: {type: "pie"},
+    //     series: [{ 
+    //         name: 'Sept 2022',
+    //         data: tabledata.map((row) => row.BMI)
+    //     }]
+    // };
 
     const sorting = (col) => {
         if (order === 'asc') {
