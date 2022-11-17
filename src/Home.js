@@ -153,11 +153,11 @@ const Home = () => {
                         </Typography>
                     </Box>
                 </Grid>
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                     <Box  p={2}>
                         <PieChart highcharts={Highcharts} options={options2} />
                     </Box>
-                </Grid>
+                </Grid> */}
             </Grid>
         </div>
     );

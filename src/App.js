@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import Home from "./Home";
-import image from "./img/fitness3.png";
+import image from "./img/wave2.png";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       className="App">
       <Navbar />
       <div className="content">
-        <h1>Welcome to Fitness app!</h1>
+        <h1 style={{color: 'white'}}>Welcome to Fitness app!</h1>
         <Home />
       </div>
     </div>

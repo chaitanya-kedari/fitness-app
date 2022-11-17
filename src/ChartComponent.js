@@ -5,12 +5,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { TextField, Box, Button } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { Stack } from '@mui/material';
 import { useState, Fragment } from 'react';
 
 const ChartComponent = (props) => {
     const {tabledata} = props;
-    const [value, setvalue] = useState([null, null]);
+    const [value, setvalue] = useState([moment('2022-09-02', 'YYYY-MM-DD'), moment('2022-09-30', 'YYYY-MM-DD')]);
     const [filteredData, setfilteredData] = useState(tabledata);
 
 
@@ -40,12 +41,18 @@ const ChartComponent = (props) => {
 
     return (
         <Fragment>
-        <Stack spacing={3}>
-            <LocalizationProvider 
+      
+        <Grid container spacing={2}>
+                <Grid xs={10} style ={{"paddingBottom":"30px"}}>
+                    <LocalizationProvider 
                 dateAdapter={AdapterDayjs}
                 localeText={{start: 'start date', end: 'end date'}}
             >
                 <DateRangePicker 
+                    // disableFuture
+                    minDate={moment('2022-09-01', 'YYYY-MM-DD')}
+                    // disablePast
+                    maxDate={moment('2022-10-01', 'YYYY-MM-DD')}
                     value={value}
                     onChange={(newValue) => setvalue(newValue)}
                     renderInput={(startProps, endProps) => (
@@ -57,8 +64,14 @@ const ChartComponent = (props) => {
                     )} 
                 />
             </LocalizationProvider>
-        </Stack>
-        <Button onClick={() => filter(value)}>Submit</Button>
+                </Grid>
+                <Grid xs={2} style={{"alignItems":"center"}}>
+                <Button onClick={() => filter(value)}>Submit</Button>
+                </Grid>
+            </Grid>
+            
+      
+      
         <HighchartsReact highcharts={Highcharts} options={options} />
         </Fragment>
     );
